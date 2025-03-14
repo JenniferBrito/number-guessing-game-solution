@@ -14,13 +14,13 @@ MAIN_GAME(){
 
   # checking if username is registred
   PLAYER_USERNAME=$($PSQL "SELECT username FROM player WHERE username = '$USERNAME'";) 
+  PLAYER_ID=$($PSQL "SELECT player_id FROM player WHERE username = '$USERNAME';")
   if  [[ -z $PLAYER_USERNAME ]]
   then
     INSERT_PLAYER=$($PSQL "INSERT INTO player(username) VALUES('$USERNAME');") 
     echo -e "\nWelcome, $USERNAME! It looks like this is your first time here."
   else
   # get player_id
-    PLAYER_ID=$($PSQL "SELECT player_id FROM player WHERE username = '$USERNAME';")
     GAMES_PLAYED=$($PSQL "SELECT COUNT(player_id) FROM games WHERE player_id = $PLAYER_ID;")
     BEST_GAME=$($PSQL "SELECT MIN(number_of_guesses) FROM games WHERE player_id = $PLAYER_ID;")
     echo -e "\nWelcome back, $PLAYER_USERNAME! You have played $GAMES_PLAYED games, and your best game took $BEST_GAME guesses."
@@ -54,7 +54,8 @@ MAIN_GAME(){
   done
   echo -e "\nYou guessed it in $GUESS_COUNT tries. The secret number was $R. Nice job!"
 
-  
+  INSERT_GAME=$($PSQL "INSERT INTO games(number_of_guesses, player_id) VALUES($GUESS_COUNT, $PLAYER_ID);")
+  echo "$INSERT_GAME"
   
 }
 
