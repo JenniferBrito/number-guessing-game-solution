@@ -38,21 +38,23 @@ MAIN_GAME(){
     then
       echo -e "\nThat is not an integer, guess again:"
       read GUESS
-      $GUESS_COUNT+=1
+      ((GUESS_COUNT++))
     fi
     if [[ $GUESS -lt $R ]]
     then
       echo -e "\nIt's higher than that, guess again:"
       read GUESS
-      $GUESS_COUNT+=1
+      ((GUESS_COUNT++))
     elif [[ $GUESS -gt $R ]]
     then 
         echo -e "\nIt's lower than that, guess again:"
         read GUESS
-        $GUESS_COUNT+=1
+        ((GUESS_COUNT++))
     fi
   done
-  echo -e"\nYou guessed it in $GUESS_COUNT tries. The secret number was $R. Nice job!"
+  echo -e "\nYou guessed it in $GUESS_COUNT tries. The secret number was $R. Nice job!"
+
+  
   
 }
 
